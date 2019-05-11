@@ -1,0 +1,27 @@
+{
+  "name": "babble",
+  "version": "1.0.0",
+  "description": "web-based responsive chat",
+  "main": "server/main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/server/test.js && http-server -p 8081",
+    "file-server": "http-server ./client -p 8080",
+    "api-server": "node server/main.js -p",
+    "start": "npm-run-all -p -r api-server file-server"
+  },
+  "author": "Gai Shabtay",
+  "license": "ISC",
+  "devDependencies": {
+    "blueimp-md5": "^2.10.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "sinon": "^7.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gai_s/babble.git"
+}
+}
