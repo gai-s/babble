@@ -1,8 +1,10 @@
 <!DOCTYPE html>
+<html lang="en">
+
   <head>
     <meta charset="UTF-8">
     <title>Vegans - Babble</title>
-    <link rel="stylesheet" type="text/css" href="css\main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -10,7 +12,7 @@
 
   <body>
     <header>
-      <img src="images\logo.png" alt="babble logo - talk freely"/>
+      <img src="images/logo.png" alt="babble logo - talk freely" aria-label="babble chat - talk freely"/>
     </header>
     <div class="registerForm-overlay">
       <form class="registerForm" method="POST" action="http://localhost:9000/login">
@@ -29,22 +31,22 @@
             </p>
       </form>
     </div>
-    <section>
-      <nav></nav>
-      <main>
+    <main>
+      <nav aria-hidden="true"></nav>
+      <article>
         <header>
           <h2 class="header-headling" >Vegans</h2>
           <dl class="header-status">
-              <dt class="header-status-massagesicon"><img src="images\massages_number.png" aria-label="number of messages"/></dt>
+              <dt class="header-status-massagesicon"><img src="images/massages_number.png" alt="number of messages" aria-label="number of messages"/></dt>
               <dd class="header_massagesnum">-</dd> 
-              <dt class="header-status-usersicon"><img src="images\people_number.png" aria-label="number of online users"/></dt>
+              <dt class="header-status-usersicon"><img src="images/people_number.png" alt="number of messages" aria-label="number of online users"/></dt>
               <dd class="header_usersnum">-</dd>
           </dl>
         </header>
         <section class="MessagesList-container">
           <ol class="MessagesList">
             <li class="MessagesList-msg hidden">
-              <img class="MessagesList-msgavatar" src="images\anonymous.png"/ alt="">
+              <img class="MessagesList-msgavatar" src="images/anonymous.png" alt=""/>
               <blockquote class="MessagesList-blockquote">
                 <cite class="MessagesList-msgname">Alex Krul</cite>
                 <time class="MessagesList-msgtime"></time>
@@ -56,11 +58,11 @@
         </section>
 
         <form class="MessageSubmitForm" method="POST" action="http://localhost:9000/login">
-          <textarea class="MessageSubmitForm-text"></textarea>
-          <button class="MessageSubmitForm-button" aria-label="Send message"><img src="images\button.png"/></button>
+          <textarea class="MessageSubmitForm-text" aria-label="enter text here"></textarea>
+          <button class="MessageSubmitForm-button" alt="send message button" aria-label="press to Send message"><img src="images/button.png"/></button>
         </form>
-      </main>
-    </section>
-    <script defer async src="scripts\main.js"></script>
+      </article>
+    </main>
+    <script defer async src="scripts/main.js"></script>
   </body>
 </html>
