@@ -47,23 +47,23 @@
               <dd class="header_usersnum">-</dd>
           </dl>
         </header>
-        <section class="MessagesList-container">
+        <div class="MessagesList-container">
           <ol class="MessagesList">
             <li class="MessagesList-msg hidden">
               <img class="MessagesList-msgavatar" src="../../client/images/anonymous.png" alt=""/>
               <blockquote class="MessagesList-blockquote">
                 <cite class="MessagesList-msgname">Alex Krul</cite>
-                <time class="MessagesList-msgtime"></time>
+                <time class="MessagesList-msgtime" datetime="08:00">08:00</time>
                 <button class="material-icons MessagesList-deleteicon hidden" aria-label="Delete message">clear</button>
                 <p class="MessagesList-msgtext">Veggies es bonus vobis, proinde essum magis kohlrabi onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.</p>
               </blockquote> 
             </li>
           </ol>
-        </section>
+        </div>
 
         <form class="MessageSubmitForm" method="POST" action="http://localhost:9000/login">
           <textarea class="MessageSubmitForm-text" aria-label="enter text here"></textarea>
-          <button class="MessageSubmitForm-button" alt="send message button" aria-label="press to Send message"><img src="../../client/images/button.png"/></button>
+          <button class="MessageSubmitForm-button"><img src="../../client/images/button.png" alt="send message button" aria-label="press to Send message"/></button>
         </form>
       </article>
     </main>
