@@ -2,7 +2,6 @@
 
 var http=require('http');
 var urlUtil=require('url');
-var queryUtil = require('querystring');
 var messages=require('./messages-util');
 
 var clients= [];
@@ -13,6 +12,7 @@ var NO_CONTENT= 204;
 var BAD_REQUEST= [400, "Error 400: Bad request!"];
 var NOT_FOUND= [404, "Error 400: Page not found"];
 var METHOD_NOT_ALLOWED= [405, "Error 405: Method not allowed"];
+var MAX_POOLING_WAITING=50000;
 
 function onRequest(request, response){
     console.log("a user made a request" + request.url);
@@ -21,7 +21,6 @@ function onRequest(request, response){
     response.setHeader('Content-Type', 'text/plain');
 
     var url_parts = urlUtil.parse(request.url, true);
-    console.log("a user made a request" + request);
 
     if(request.method==='GET'){
         if(url_parts.pathname.substr(0, 9) === '/messages'){
@@ -41,11 +40,11 @@ function onRequest(request, response){
             } 
             else {
                 endPendingStatRequests(messages.messagesLength(), users.length);
-                clients.push(response); //response is delayd until new messages arrive
+                clients.push({timestamp: Date.now(), client_response: response}); //response is delayd until new messages arrive
             }
         }
         else if(url_parts.pathname === '/stats'){
-                stats_clients.push(response);
+                stats_clients.push({timestamp: Date.now(), client_response: response});
         }
         else{
             senderrResponse(response, NOT_FOUND);
@@ -73,7 +72,7 @@ function onRequest(request, response){
                 /*releasing pending messages requests*/
                 var msgs=messages.getMessages(len-1);
                 while(clients.length > 0) { //clients waiting for a new message arrival
-                    var client = clients.pop();
+                    var client = clients.pop().client_response;
                     client.end(JSON.stringify({
                         count: len,
                         append: msgs,
@@ -93,7 +92,6 @@ function onRequest(request, response){
                 if(users.indexOf(email)==-1){
                     users.push(email);
                 }
-                console.log("users after logout are: ", users);
                 endPendingStatRequests(messages.messagesLength(), users.length);
 
                 response.write(JSON.stringify("thank you, you are now login"));
@@ -106,11 +104,9 @@ function onRequest(request, response){
                 email+=chunk;
             });
             request.on('end', function(){
-                console.log('email is: ', email);
                 email=JSON.parse(email);
                 if(users.find(user => user==email)){
                     users.splice(users.indexOf(email),1);
-                    console.log("users after logout are: ", users);
                     /*updating all online users that a user has log out*/
                     endPendingStatRequests(messages.messagesLength(), users.length);
                 }
@@ -135,7 +131,7 @@ function onRequest(request, response){
 
             if(messages.deleteMessage(id)!=-1){
                 while(clients.length > 0) {
-                    var client = clients.pop();
+                    var client = clients.pop().client_response;
                     client.end(JSON.stringify({
                         count: len,
                         append: [],
@@ -163,7 +159,6 @@ function onRequest(request, response){
 }
 
 function senderrResponse(response, errcode){
-    console.log("bad bad request");
     response.writeHead(errcode[0],{"Content-type": "text/plain"});
     response.write(errcode[1]);
     response.end();
@@ -171,7 +166,7 @@ function senderrResponse(response, errcode){
 
 function endPendingStatRequests(len, clients_num){
     while(stats_clients.length > 0){
-        var stats_client=stats_clients.pop();
+        var stats_client=(stats_clients.pop()).client_response;
         stats_client.end(JSON.stringify({
             users_num: clients_num,
             messages_num: len
@@ -179,7 +174,21 @@ function endPendingStatRequests(len, clients_num){
     }
 }
 
+function closeExpiredPollingRequests(request_array){
+    var expired_time=Date.now()-MAX_POOLING_WAITING;
+    for(var i=0; i<request_array.length; i++){
+        if(request_array[i].timestamp<=expired_time){
+            request_array[i].client_response.end(JSON.stringify(""));
+            request_array.splice(i,1);
 
+        }
+    }
+}
+
+setInterval(function(){
+    closeExpiredPollingRequests(stats_clients); 
+    closeExpiredPollingRequests(clients); 
+}, MAX_POOLING_WAITING);
 
 http.createServer(onRequest).listen(9000);
 console.log("server is now running...hehe");
