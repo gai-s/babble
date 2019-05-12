@@ -16,39 +16,41 @@
 
     <div id="mocha"></div>
     <header>
-      <img src="..\..\client\images\logo.png" alt="babble logo - talk freely"/>
+      <img src="../../client/images/logo.png" alt="babble logo - talk freely" aria-label="babble chat - talk freely"/>
     </header>
     <div class="registerForm-overlay">
       <form class="registerForm" method="POST" action="http://localhost:9000/login">
             <h2>who are you?</h2>
-            <p><label for="name"> Full name:  </label>
-              <input type="text" id="name"/>
-            </p>
-            <p><label for="email"> Email: </label>
-              <input  type="text" id="email"/>
+            <p>
+              <label for="name"> Full name:  </label>
+              <input type="text" id="name" tabindex="1"/>
             </p>
             <p>
-              <button class="registerForm-anonymousbutton" type="submit">Stay Anonymous</button>
-              <button class="registerForm-savebutton" type="submit">Save</button>
+              <label for="email"> Email: </label>
+              <input  type="text" id="email" tabindex="1"/>
+            </p>
+            <p class="registerForm-buttons">
+              <button class="registerForm-anonymousbutton" type="submit" tabindex="1">Stay Anonymous</button>
+              <button class="registerForm-savebutton" type="submit" tabindex="1">Save</button>
             </p>
       </form>
     </div>
-    <section>
-      <nav></nav>
-      <main>
+    <main>
+      <nav aria-hidden="true"></nav>
+      <article>
         <header>
           <h2 class="header-headling" >Vegans</h2>
           <dl class="header-status">
-              <dt class="header-status-massagesicon"><img src="..\..\client\images\massages_number.png" aria-label="number of messages"/></dt>
+              <dt class="header-status-massagesicon"><img src="../../client/images/massages_number.png" alt="number of messages" aria-label="number of messages"/></dt>
               <dd class="header_massagesnum">-</dd> 
-              <dt class="header-status-usersicon"><img src="..\..\client\images\people_number.png" aria-label="number of online users"/></dt>
+              <dt class="header-status-usersicon"><img src="../../client/images/people_number.png" alt="number of messages" aria-label="number of online users"/></dt>
               <dd class="header_usersnum">-</dd>
           </dl>
         </header>
-        <div class="MessagesList-container">
+        <section class="MessagesList-container">
           <ol class="MessagesList">
             <li class="MessagesList-msg hidden">
-              <img class="MessagesList-msgavatar" src="..\..\client\images\anonymous.png"/ alt="">
+              <img class="MessagesList-msgavatar" src="../../client/images/anonymous.png" alt=""/>
               <blockquote class="MessagesList-blockquote">
                 <cite class="MessagesList-msgname">Alex Krul</cite>
                 <time class="MessagesList-msgtime"></time>
@@ -57,14 +59,14 @@
               </blockquote> 
             </li>
           </ol>
-        </div>
+        </section>
 
         <form class="MessageSubmitForm" method="POST" action="http://localhost:9000/login">
-          <textarea class="MessageSubmitForm-text"></textarea>
-          <button class="MessageSubmitForm-button" aria-label="Send message"><img src="..\..\client\images\button.png"/></button>
+          <textarea class="MessageSubmitForm-text" aria-label="enter text here"></textarea>
+          <button class="MessageSubmitForm-button" alt="send message button" aria-label="press to Send message"><img src="../../client/images/button.png"/></button>
         </form>
-      </main>
-    </section>
+      </article>
+    </main>
 
     <script src="../../node_modules/mocha/mocha.js"></script>
     <script src="../../node_modules/chai/chai.js"></script>
