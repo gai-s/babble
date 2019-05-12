@@ -1,0 +1,291 @@
+
+*{
+    box-sizing: border-box;
+}
+body{
+    padding: 0px;
+    margin: 0px;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+/*first header*/
+body>header{
+    z-index: 5;
+    background-color: #353744;
+    width: 100%;
+    height: 120px;
+    padding: 1rem;
+    flex-shrink: 0;
+}
+header>img{
+    margin-top: 10px;
+}
+.registerForm-overlay{
+    background-color: rgba(0,0,0,0.5);
+    font-family: 'Nunito', sans-serif;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 6;
+
+}
+.registerForm{
+    position: relative;
+    text-align: left;
+    background-color: #f9f9f9;
+    color: black;
+    display: inline-block;
+    width: 90%;
+    height: 80%;
+    margin-left: 5%;
+    margin-top: 10%;
+    padding-top: 1rem;
+    z-index: 7;
+}
+.registerForm h2{
+    padding-left: 2rem;
+}
+.registerForm label{
+    padding-left: 2rem;
+    text-align: left;
+    color: rgb(97, 97, 97);
+    line-height: 1.2;
+    font-family: 'Nunito', sans-serif;
+    text-align: left;  
+}
+.registerForm input{
+    display: block;
+    margin-left: 2rem;
+    color: rgb(32, 39, 41);
+    font-weight: bold;
+    border-radius: 9px;
+    width: 50%;
+}
+.registerForm-buttons{
+    position: absolute;
+    bottom: 1rem;
+    right: 1em;
+}
+.registerForm button{
+    padding: 0rem 1rem 0rem;
+}
+.registerForm-anonymousbutton{
+    border-radius: 1px;
+    background-image: -moz-linear-gradient( 90deg, rgb(180,180,180) 0%, rgb(209,209,209) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(180,180,180) 0%, rgb(209,209,209) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(180,180,180) 0%, rgb(209,209,209) 100%);  
+}
+.registerForm-savebutton{
+    background-image: -moz-linear-gradient( 90deg, rgb(71,162,114) 0%, rgb(125,216,78) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(71,162,114) 0%, rgb(125,216,78) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(71,162,114) 0%, rgb(125,216,78) 100%);
+    border-radius: 1px;
+    color: white;
+}
+
+main{
+    width: 100%;
+    height: 85%;
+    bottom: 0;
+    display: flex;
+}
+nav{
+    display: inline-block;
+    background-color: #61d391;
+    display: none;
+    flex-grow: 1;
+}
+article{
+    flex-grow: 4;
+    background-color: #f6f6f6;
+    position: relative;  
+    display: flex;
+    flex-direction: column;
+
+}
+article header{
+    margin: 0px;
+    padding: 0px;
+    height: 60px;
+    flex-grow: 0;
+}
+.header-headling{
+    display: inline-block;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    font-size: 1.875rem;
+    padding-left: 10px;
+    margin-top: 6px;
+}
+.header-status{
+    float: right;
+    margin: 0;
+    margin-right: 20px;
+}
+dt, dd{
+    display: inline-block;
+    list-style-type: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    margin:3px;
+    margin-top: 10px;
+}
+.MessagesList-container{
+    background-color: #f6f6f6;
+    margin: 0px;
+    max-height: 65%;
+    max-width: 100%;
+    flex-grow: 7;
+    flex-shrink: 7;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+.MessagesList{
+    list-style-type: none;
+    margin: 0px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+li{
+    padding-left: 0;
+    padding: 3px;
+    display: flex;
+    flex-direction: row;
+}
+.MessagesList-msgavatar{
+    margin-top: 0px;
+    bottom: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+blockquote{
+    display: inline-block;
+    margin: 0px;
+    border: 1px solid #dfdfdf;
+    background-color: #ffffff;
+    border-radius: 5%;
+    padding: 5px;
+}
+blockquote:hover{
+    background-color: #dfdfdf;
+}
+blockquote>cite{
+    font-family: 'Nunito', sans-serif;
+    color:  #202729;
+    font-size: 15px;
+    font-weight: bold;
+}
+blockquote> p{
+    font-family: 'Nunito', sans-serif;
+    color:  #616161;
+    max-width: 600px;
+    word-wrap: break-word;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+
+.MessagesList-deleteicon{
+    float: right;
+    font-size: 90px;
+    border: none;
+    background-color: none;
+}
+.MessagesList-msgtime{
+    color: #dfdfdf;
+}
+.MessageSubmitForm{
+    flex-grow: 1;
+    flex-shrink: 0;
+    border-color: #DBDBDB;
+    background-color: white;
+    border-top-style: solid;
+    border-width: 2px;
+    width: 100%;
+    display: flex;
+    margin-top: 1rem;
+
+}
+textarea{
+    border: none;
+    outline: none;
+    margin: 20px;
+    max-height: 300px;
+    resize: none;
+    width: 90%; 
+
+}
+.MessageSubmitForm-button{
+    background-color: white;
+    border: none;
+    height: 90%;    
+    margin: auto;
+}
+
+::-webkit-scrollbar {
+    background: white;
+    border-radius: 1rem;
+    border: 2px solid #DBDBDB;
+}
+::-webkit-scrollbar-thumb{
+    background: #ebedec;
+    border-radius: 1rem;
+    border: 2px solid #DBDBDB;
+}
+
+.hidden {
+    visibility: hidden;
+    display: none; 
+    
+}
+
+.visually-hidden { /* https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+@media screen and (max-width: 320px){
+}
+@media screen and (min-width: 638px){
+    .registerForm{
+        position: absolute;
+        width: 40%;
+        height: auto;
+        padding-top: 1rem;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        margin: 0;
+    }
+
+    .registerForm label{
+        display: inline-block;
+        width: 25%;
+    }
+    .registerForm input{
+        display: inline-block;
+        margin-left: 1rem;
+    }
+
+    .registerForm-buttons{
+        position: relative;
+        float: right;
+
+    }
+    nav{
+        display: inline-block;
+    }
+}
