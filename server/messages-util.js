@@ -8,7 +8,6 @@
     }
 
     var addMessage= function(message){
-        console.log("***************the entire msg object is:",message);
         var d = new Date();
         message.id= d.getTime();
         messages.push(message);
