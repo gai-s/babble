@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Vegans - Babble</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+
+  <body>
+    <header>
+      <img src="images/logo.png" alt="babble logo - talk freely" aria-label="babble chat - talk freely"/>
+    </header>
+    <div class="registerForm-overlay">
+      <form class="registerForm" method="POST" action="http://localhost:9000/login">
+            <h2>who are you?</h2>
+            <p>
+              <label for="name"> Full name:  </label>
+              <input type="text" id="name" tabindex="1"/>
+            </p>
+            <p>
+              <label for="email"> Email: </label>
+              <input  type="text" id="email" tabindex="1"/>
+            </p>
+            <p class="registerForm-buttons">
+              <button class="registerForm-anonymousbutton" type="submit" tabindex="1">Stay Anonymous</button>
+              <button class="registerForm-savebutton" type="submit" tabindex="1">Save</button>
+            </p>
+      </form>
+    </div>
+    <main>
+      <nav aria-hidden="true"></nav>
+      <article>
+        <header>
+          <h2 class="header-headling" >Vegans</h2>
+          <dl class="header-status">
+              <dt class="header-status-massagesicon"><img src="images/massages_number.png" alt="number of messages" aria-label="number of messages"/></dt>
+              <dd class="header_massagesnum">-</dd> 
+              <dt class="header-status-usersicon"><img src="images/people_number.png" alt="number of messages" aria-label="number of online users"/></dt>
+              <dd class="header_usersnum">-</dd>
+          </dl>
+        </header>
+        <section class="MessagesList-container">
+          <ol class="MessagesList">
+            <li class="MessagesList-msg hidden">
+              <img class="MessagesList-msgavatar" src="images/anonymous.png" alt=""/>
+              <blockquote class="MessagesList-blockquote">
+                <cite class="MessagesList-msgname">Alex Krul</cite>
+                <time class="MessagesList-msgtime"></time>
+                <button class="material-icons MessagesList-deleteicon hidden" aria-label="Delete message">clear</button>
+                <p class="MessagesList-msgtext">Veggies es bonus vobis, proinde essum magis kohlrabi onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.</p>
+              </blockquote> 
+            </li>
+          </ol>
+        </section>
+
+        <form class="MessageSubmitForm" method="POST" action="http://localhost:9000/login">
+          <textarea class="MessageSubmitForm-text" aria-label="enter text here"></textarea>
+          <button class="MessageSubmitForm-button" alt="send message button" aria-label="press to Send message"><img src="images/button.png"/></button>
+        </form>
+      </article>
+    </main>
+    <script defer async src="scripts/main.js"></script>
+  </body>
+</html>
