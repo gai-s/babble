@@ -30,7 +30,10 @@ window.Babble={
 
   poll: function() {
     window.Babble.getMessages(window.Babble.counter, function(response) {
-      if(response.delete_message){
+      if(response==""){
+        console.log("response is expired, ready for another poll")
+      }
+      else if(response.delete_message){
         var id=response.delete_message;
         var listy=document.getElementsByClassName('MessagesList')[0];
         listy.removeChild(document.getElementById(id));
@@ -89,10 +92,13 @@ window.Babble={
 
   stats: function(){
     window.Babble.sendServerRequest('get', '/stats',"", function(response) {
-      document.getElementsByClassName('header_massagesnum')[0].innerHTML=response.messages_num;
-      document.getElementsByClassName('header_usersnum')[0].innerHTML=response.users_num;
-      //var elem = document.getElementById("chatlist");
-      //elem.value = elem.value + response.append;
+      if(response==""){
+        console.log("response is expired, ready for another stats");
+      }
+      else{
+        document.getElementsByClassName('header_massagesnum')[0].innerHTML=response.messages_num;
+        document.getElementsByClassName('header_usersnum')[0].innerHTML=response.users_num;
+      }
       window.Babble.stats();
     });
   },
@@ -105,7 +111,7 @@ window.Babble={
     console.log("exiting page...");
     var email=JSON.parse(localStorage.getItem('babble')).userInfo.email;
     var name=JSON.parse(localStorage.getItem('babble')).userInfo.name;
-    if (email==="" && name==""){
+    if (email==="" && name===""){
       email="anonymous";
     }
     window.Babble.sendServerRequest('post','/logout', email, window.Babble.empty);
@@ -120,6 +126,7 @@ window.Babble={
     }
     window.Babble.sendServerRequest('post','/login', email, window.Babble.empty);
   },
+
 /*event handling the submit message button, for sending message to server*/
   postMessageHandler: function(event){
       event.preventDefault();
@@ -133,13 +140,14 @@ window.Babble={
         timestamp: n};
       /*need to clean current message from local storage*/
       elemy.value="";
-      console.log("hi there sending the message: " + elemy);
       window.Babble.postMessage(usermessage, window.Babble.empty)
     },
-    postMessage(message, callback){
+
+  postMessage(message, callback){
       window.Babble.sendServerRequest('post','/messages',message, callback );
       //should I pool here and get stats? it will be happen anyway automatically
-    },
+  },
+
   register: function(userdetails){
       localStorage.setItem('babble', JSON.stringify({
         currentMessage:'',
@@ -187,6 +195,7 @@ window.Babble={
     window.Babble.sendServerRequest('delete', '/messages', '/'+ id, callback)
     //should I pool here and get stats? it will be happen anyway automatically
   },
+
   putDeleteButton: function(e){
     this.getElementsByClassName('MessagesList-deleteicon')[0].classList.remove('visually-hidden');
   },
@@ -202,57 +211,59 @@ window.Babble={
       //var current_height=textare_properties(getPropertyValue('height'));
       var scroll_height=textarea.scrollHeight;
       textarea.style.height= scroll_height + 'px';
+  },
+
+  first_run: function(){  
+    var registerbutton = document.querySelector('.registerForm-savebutton');
+    registerbutton.onclick = window.Babble.submitRegistrationHandler;
+
+    var registerannonymous = document.querySelector('.registerForm-anonymousbutton');
+    registerannonymous.onclick = window.Babble.submitRegistrationAnnonymousHandler;
+
+    var msgform = document.querySelector('.MessageSubmitForm');
+    msgform.onsubmit = window.Babble.postMessageHandler;
+
+    var msg_form_text = document.querySelector('.MessageSubmitForm-text');
+    msg_form_text.addEventListener("keyup", function(event) {
+      // "Enter" key on the keyboard
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector('.MessageSubmitForm-button').click();
+      }
+    });
+    //before unload we save what been wrote at textarea
+    window.addEventListener("beforeunload", window.Babble.logout);
+    window.addEventListener("beforeunload", window.Babble.saveCurrentMessageHandler); 
+
+    //dealing with enlarging of textarea in Message Submit Form
+    var msgformtextarea = document.querySelector('.MessageSubmitForm-text');
+    msgform.onkeyup = window.Babble.autoTextareaExpand;
+
+    window.Babble.stats();
+    window.Babble.poll();
+
+    /*initializing babble variable in local stprage with empty values*/
+    if(!localStorage.getItem('babble')){
+      localStorage.setItem('babble', JSON.stringify({
+        currentMessage:'',
+        userInfo: {name: '', email: ''}
+      }));
+    }
+    /*User persistance - in case the user already made a login*/
+    else if(JSON.parse(localStorage.getItem('babble')).userInfo.name!=''){
+          var regform_overlay = document.querySelector('.registerForm-overlay');
+          regform_overlay.classList.add('hidden');
+          //document.querySelector('.refisterForm-overlay').add('hidden');
+          var currentmsg=JSON.parse(localStorage.getItem('babble')).currentMessage;
+          var msg_input=document.querySelector('.MessageSubmitForm-text');
+          msg_input.value=currentmsg;
+          window.Babble.login();
+    }
+    /*every load of page, we take the current message from local store and put it in display, 
+    if the user didn't wrote anything there will be there empty string*/
+    //hiding the message template
+    //message_node.setAttribute('aria-hidden', 'true');
   }
-  };
+};
+window.Babble.first_run();
 
-var registerbutton = document.querySelector('.registerForm-savebutton');
-registerbutton.onclick = window.Babble.submitRegistrationHandler;
-
-var registerannonymous = document.querySelector('.registerForm-anonymousbutton');
-registerannonymous.onclick = window.Babble.submitRegistrationAnnonymousHandler;
-
-var msgform = document.querySelector('.MessageSubmitForm');
-msgform.onsubmit = window.Babble.postMessageHandler;
-
-var msg_form_text = document.querySelector('.MessageSubmitForm-text');
-msg_form_text.addEventListener("keyup", function(event) {
-  // "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    document.querySelector('.MessageSubmitForm-button').click();
-  }
-});
-
-//before unload we save what been wrote at textarea
-window.addEventListener("beforeunload", window.Babble.logout);
-window.addEventListener("beforeunload", window.Babble.saveCurrentMessageHandler); 
-
-//dealing with enlarging of textarea in Message Submit Form
-var msgformtextarea = document.querySelector('.MessageSubmitForm-text');
-msgform.onkeyup = window.Babble.autoTextareaExpand;
-
-window.Babble.stats();
-window.Babble.poll();
-
-/*initializing babble variable in local stprage with empty values*/
-if(!localStorage.getItem('babble')){
-  localStorage.setItem('babble', JSON.stringify({
-    currentMessage:'',
-    userInfo: {name: '', email: ''}
-  }));
-}
-/*User persistance - in case the user already made a login*/
-else if(JSON.parse(localStorage.getItem('babble')).userInfo.name!=''){
-      console.log("already registered! you wakko");
-      var regform_overlay = document.querySelector('.registerForm-overlay');
-      regform_overlay.classList.add('hidden');
-      //document.querySelector('.refisterForm-overlay').add('hidden');
-      var currentmsg=JSON.parse(localStorage.getItem('babble')).currentMessage;
-      var msg_input=document.querySelector('.MessageSubmitForm-text');
-      msg_input.value=currentmsg;
-      window.Babble.login();
-}
-/*every load of page, we take the current message from local store and put it in display, 
-if the user didn't wrote anything there will be there empty string*/
-//hiding the message template
-//message_node.setAttribute('aria-hidden', 'true');
